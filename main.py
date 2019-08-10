@@ -1,12 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
 from datetime import date, datetime
+import config
 
 base_url = 'https://trysail.jp'
 get_url = base_url + '/pages/update'
 post_url = 'https://slack.com/api/chat.postMessage'
-
-BOT_ACCESS_TOKEN = 'xoxb-492163356806-716184467233-tWiO1HMtkrMr1M87zDgVK8CY'
 
 
 def main():
@@ -24,7 +23,7 @@ def main():
                 label = a.find_all('span', class_='label')[1].string
 
                 target_date = datetime.strptime(time, "%Y.%m.%d").date()
-                if (today == target_date):
+                if today == target_date:
                     titles.append(
                         {
                             'text': text,
@@ -39,11 +38,11 @@ def main():
         print('no content')
         return
 
-    headers = {"Authorization": "Bearer " + BOT_ACCESS_TOKEN}
+    headers = {"Authorization": "Bearer " + config.BOT_ACCESS_TOKEN}
     for t in titles:
         message = '*' + t['text'] + '*' + '\n' + \
-            t['url'] + '\n' + \
-            '`' + t['label'] + '`'
+                  t['url'] + '\n' + \
+                  '`' + t['label'] + '`'
         payload = {
             'channel': 'trysail',
             'text': message,
