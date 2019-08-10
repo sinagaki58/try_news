@@ -8,7 +8,7 @@ get_url = base_url + '/pages/update'
 post_url = 'https://slack.com/api/chat.postMessage'
 
 
-def main():
+def main(event, context):
     html = requests.get(get_url).content
     soup = BeautifulSoup(html, 'html.parser')
 
@@ -35,8 +35,7 @@ def main():
                     break
 
     if len(titles) == 0:
-        print('no content')
-        return
+        return 'no content'
 
     headers = {"Authorization": "Bearer " + os.environ['SLACK_BOT']}
     for t in titles:
@@ -49,7 +48,4 @@ def main():
             'mrkdwn': True
         }
         res = requests.post(post_url, headers=headers, data=payload)
-        print(res.ok)
-
-
-main()
+        return res.ok
