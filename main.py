@@ -36,18 +36,21 @@ def main():
                     break
 
     if len(titles) == 0:
+        print('no content')
         return
 
     headers = {"Authorization": "Bearer " + BOT_ACCESS_TOKEN}
-    message = '*' + titles[0]['text'] + '*' + '\n' + \
-        titles[0]['url'] + '\n' + \
-        '`' + titles[0]['label'] + '`'
-    payload = {
-        'channel': 'trysail',
-        'text': message,
-        'mrkdwn': True
-    }
-    requests.post(post_url, headers=headers, data=payload)
+    for t in titles:
+        message = '*' + t['text'] + '*' + '\n' + \
+            t['url'] + '\n' + \
+            '`' + t['label'] + '`'
+        payload = {
+            'channel': 'trysail',
+            'text': message,
+            'mrkdwn': True
+        }
+        res = requests.post(post_url, headers=headers, data=payload)
+        print(res.ok)
 
 
 main()
