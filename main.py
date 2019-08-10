@@ -1,7 +1,7 @@
 import requests
+import os
 from bs4 import BeautifulSoup
 from datetime import date, datetime
-import config
 
 base_url = 'https://trysail.jp'
 get_url = base_url + '/pages/update'
@@ -38,7 +38,7 @@ def main():
         print('no content')
         return
 
-    headers = {"Authorization": "Bearer " + config.BOT_ACCESS_TOKEN}
+    headers = {"Authorization": "Bearer " + os.environ['SLACK_BOT']}
     for t in titles:
         message = '*' + t['text'] + '*' + '\n' + \
                   t['url'] + '\n' + \
