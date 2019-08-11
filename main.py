@@ -35,6 +35,7 @@ def main(event, context):
                     break
 
     if len(titles) == 0:
+        print('no content')
         return 'no content'
 
     headers = {"Authorization": "Bearer " + os.environ['SLACK_BOT']}
@@ -48,4 +49,5 @@ def main(event, context):
             'mrkdwn': True
         }
         res = requests.post(post_url, headers=headers, data=payload)
+        print(res.ok)
         return res.ok
