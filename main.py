@@ -48,6 +48,10 @@ def main(event, context):
             'text': message,
             'mrkdwn': True
         }
+
         res = requests.post(post_url, headers=headers, data=payload)
-        print(res.ok)
-        return res.ok
+        print(*res)
+
+
+if __name__ == '__main__':
+    main(None, None)
