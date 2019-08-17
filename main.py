@@ -1,7 +1,7 @@
-import requests
 import os
+from datetime import date, datetime, timedelta
+import requests
 from bs4 import BeautifulSoup
-from datetime import date, datetime
 
 base_url = 'https://trysail.jp'
 get_url = base_url + '/pages/update'
@@ -12,7 +12,7 @@ def main(event, context):
     html = requests.get(get_url).content
     soup = BeautifulSoup(html, 'html.parser')
 
-    today = datetime.today().date()
+    yesterday = (datetime.today() - timedelta(days=1)).date()
     titles = []
     for div in soup.find_all('div', class_='content-list'):
         for li in div.find_all('li'):
@@ -23,7 +23,7 @@ def main(event, context):
                 label = a.find_all('span', class_='label')[1].string
 
                 target_date = datetime.strptime(time, "%Y.%m.%d").date()
-                if today == target_date:
+                if yesterday == target_date:
                     titles.append(
                         {
                             'text': text,
@@ -48,7 +48,6 @@ def main(event, context):
             'text': message,
             'mrkdwn': True
         }
-
         res = requests.post(post_url, headers=headers, data=payload)
         print(*res)
 
