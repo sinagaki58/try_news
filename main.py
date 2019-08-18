@@ -20,8 +20,11 @@ def main(event, context):
                 url = a.get('href')
                 text = a.find('h3').string
                 time = a.find('span', class_='time').text.replace('UPDATE', '')
-                label = a.find_all('span', class_='label')[1].string
-
+                label = ''
+                if len(a.find_all('span', class_='label')) > 2:
+                    label = a.find_all('span', class_='label')[2].string
+                else:
+                    label = a.find_all('span', class_='label')[1].string
                 target_date = datetime.strptime(time, "%Y.%m.%d").date()
                 if yesterday == target_date:
                     titles.append(
